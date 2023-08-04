@@ -14,6 +14,7 @@ model Task {
   id      Int     @id @default(autoincrement())
   name    String
   checked Boolean
+  createdAt DateTime @default(now())
 
   subtasks Subtask[]
 }
@@ -22,6 +23,7 @@ model Subtask {
   id       Int     @id @default(autoincrement())
   name     String
   checked  Boolean
+  createdAt DateTime @default(now())
   
   task     Task    @relation(fields: [taskId], references: [id])
   taskId Int
