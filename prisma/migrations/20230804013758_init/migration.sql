@@ -1,0 +1,15 @@
+-- CreateTable
+CREATE TABLE "Task" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
+    "checked" BOOLEAN NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Subtask" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
+    "checked" BOOLEAN NOT NULL,
+    "taskId" INTEGER NOT NULL,
+    CONSTRAINT "Subtask_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
