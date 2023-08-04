@@ -9,9 +9,7 @@
 }
 
 body {
-    background-color: black;
-    background-image: url('https://i.imgur.com/6xXPfKk.jpg');
-    background-size: cover;
+    @apply bg-gray-400/5;
     color: #fff;
     -webkit-font-smoothing: antialiased;
 }

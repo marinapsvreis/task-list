@@ -4,9 +4,9 @@ import TaskList from "@/components/TaskList";
 
 export default function Home() {
 	return (
-		<div className="bg-[black] w-full h-full fixed -z-1 opacity-90">
+		<div className="w-full h-full fixed">
 			<Header />
-			<div className="flex flex-col w-[320px] m-auto gap-4">
+			<div className="flex flex-col w-4/5 m-auto gap-4">
 				<TaskInput />
 				<TaskList />
 			</div>
