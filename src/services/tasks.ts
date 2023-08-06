@@ -32,7 +32,7 @@ export const postTask = async (name: string) => {
 export const updateTask = async (task: Task) => {
 	const { data } = await api.put(`/tasks/update/${task.id}`, {
 		name: task.name,
-		checked: task.checked,
+		checked: !task.checked,
 		validateStatus: (s: number) => s === 201
 	}); 
 

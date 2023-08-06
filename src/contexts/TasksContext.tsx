@@ -34,17 +34,16 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 		}
 	};
 
-	const updateTaskList = (task: Task) => {
-		task.checked = !task.checked;
-		updateTask(task);
+	const updateTaskList = async (task: Task) => {
+		const updatedTask = await updateTask(task);
 		const updatedTasksList = tasks.map((taskItem) => {
 			if(taskItem.id === task.id){
-				return task;
+				return updatedTask;
 			} else {
 				return taskItem;
 			}
 		});
-
+	
 		setTasks(updatedTasksList);
 	};
 
