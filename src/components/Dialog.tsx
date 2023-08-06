@@ -1,26 +1,23 @@
-import { postTask } from "@/services/tasks";
-import { useState } from "react";
+import { TasksContext } from "@/contexts/TasksContext";
+import { useContext, useState } from "react";
 
 interface DialogProps {
   type: "task" | "subtask"
   open: boolean
-  setOpen: (open: boolean) => void;
+  setOpen: (open: boolean) => void
 }
 
 export default function Dialog({ type, open, setOpen }: DialogProps) {
 	const [name, setName] = useState("");
+	const { addTaskToList } = useContext(TasksContext);
 
 	const handleNameChange = (name: string) => {
 		setName(name);
 	};
 
 	const handleAddTask = () => {
-		if(type === "task"){
-			postTask(name);
-			setOpen(false);
-		} else {
-			console.log(`Salvar uma subtask ${name}`);
-		}
+		addTaskToList(name);
+		setOpen(false);
 	};
 
 	return (

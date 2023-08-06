@@ -21,22 +21,28 @@ export const getAllTasks = async () => {
 export const getTaskById = async () => {};
 
 export const postTask = async (name: string) => {
-	const { data } = await api.post<Task>("/tasks/create", {
+	const { data } = await api.post("/tasks/create", {
 		name: name,
 		validateStatus: (s: number) => s === 201
 	}); 
 
-	return data;
+	return data.task;
 };
 
 export const updateTask = async (task: Task) => {
-	const { data } = await api.put<Task>(`/tasks/update/${task.id}`, {
+	const { data } = await api.put(`/tasks/update/${task.id}`, {
 		name: task.name,
 		checked: task.checked,
 		validateStatus: (s: number) => s === 201
 	}); 
 
-	return data;
+	return data.task;
 };
 
-export const deleteTask = async () => {};
+export const deleteTask = async (id: number) => {
+	const response = await api.delete(`/tasks/delete/${id}`, {
+		validateStatus: (s: number) => s === 204
+	});
+
+	return response;
+};

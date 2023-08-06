@@ -1,26 +1,9 @@
-"use client";
-
-import { Task, getAllTasks } from "@/services/tasks";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import TaskItem from "./TaskItem";
-
-
+import { TasksContext } from "@/contexts/TasksContext";
 
 export default function TaskList() {
-	const [tasks, setTasks] = useState<Task[]>([]);
-
-	const getTaskList = async () => {
-		try {
-			const response = await getAllTasks();
-			setTasks(response.tasks); 
-		} catch(error){
-			console.log(error);
-		}		
-	};
-
-	useEffect(() => {
-		getTaskList();
-	}, []);
+	const { tasks } = useContext(TasksContext);	
 	
 	return (
 		<div className="flex justify-center w-full rounded-lg shadow">
@@ -28,7 +11,7 @@ export default function TaskList() {
 				{
 					tasks.map((task) => {
 						return (
-							<TaskItem key={task.id} task={task} tasks={tasks} setTasksList={setTasks} />
+							<TaskItem key={task.id} task={task} />
 						);
 					})
 				}	
