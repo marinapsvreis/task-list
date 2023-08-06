@@ -6,7 +6,7 @@ export default function TaskList() {
 	const { tasks } = useContext(TasksContext);	
 	
 	return (
-		<div className="flex justify-center w-full rounded-lg shadow">
+		<div className="flex justify-center w-full rounded-lg shadow bg-blue-gray-100/10">
 			<div className="flex flex-col w-full gap-1 p-4 text-base text-black rounded-lg min-h-96 bg-slate-100">
 				{
 					tasks.map((task) => {
