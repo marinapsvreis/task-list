@@ -13,12 +13,12 @@ export default async function handler(
 
 	const { name } = bodySchema.parse(req.body);
 
-	await prisma.task.create({
+	const task = await prisma.task.create({
 		data: {
 			name: name,
 			checked: false,
 		}
 	});
 
-	return res.status(201).end();
+	return res.status(201).json({ task });
 }

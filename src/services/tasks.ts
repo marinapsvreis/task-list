@@ -20,7 +20,14 @@ export const getAllTasks = async () => {
 
 export const getTaskById = async () => {};
 
-export const postTask = async () => {};
+export const postTask = async (name: string) => {
+	const { data } = await api.post<Task>("/tasks/create", {
+		name: name,
+		validateStatus: (s: number) => s === 201
+	}); 
+
+	return data;
+};
 
 export const deleteTask = async () => {};
 
