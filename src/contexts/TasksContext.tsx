@@ -1,4 +1,4 @@
-import { Subtask, postSubtask, updateSubtask } from "@/services/subtasks";
+import { Subtask, deleteSubtask, postSubtask, updateSubtask } from "@/services/subtasks";
 import { Task, deleteTask, getAllTasks, postTask, updateTask } from "@/services/tasks";
 import { ReactNode, createContext, useEffect, useState } from "react";
 
@@ -9,6 +9,7 @@ interface TaskContextType {
 	deleteTaskFromList: (id: number) => void
 	updateSubtaskList: (subtask: Subtask) => void
 	addSubtaskToTask: (name: string, taskId: number) => void
+	deleteSubstaskFromTask: (subtask: Subtask) => void
 }
 
 export const TasksContext = createContext({} as TaskContextType);
@@ -81,26 +82,38 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 
 	const addSubtaskToTask = async (name: string, taskId: number) => {
 		const subtask = await postSubtask(name, taskId);
-		
-		if(subtask){
-			const tasksUpdated = tasks.map((task) => {
-				if(task.id === taskId){
-					task.subtasks.push(subtask);
-					return task;
-				}else{
-					return task;
-				}
+	
+		if (subtask) {
+			setTasks((prevTasks) => {
+				return prevTasks.map((task) => {
+					if (task.id === taskId) {
+						const updatedSubtasks = [...task.subtasks, subtask];
+						return { ...task, subtasks: updatedSubtasks };
+					} else {
+						return task;
+					}
+				});
 			});
-
-			console.log(tasksUpdated);
-
-			setTasks(tasksUpdated);
 		}
+	};
+
+	const deleteSubstaskFromTask = async (subtask: Subtask) => {
+		deleteSubtask(subtask.id);
+		const tasksListWithoutSubtask = tasks.map((taskItem) => {
+			if(taskItem.id === subtask.taskId){
+				const updatedSubtasks = taskItem.subtasks.filter((subtaskItem) => subtask.id === subtaskItem.id);
+				return { ...taskItem, subtasks: updatedSubtasks };
+			} else {
+				return taskItem;
+			}
+		});
+
+		setTasks(tasksListWithoutSubtask);
 	};
 
 	useEffect(() => {
 		getTasksList();
-	}, []);
+	}, [tasks]);
 
 	return (
 		<TasksContext.Provider
@@ -110,7 +123,8 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 				updateTaskList,
 				deleteTaskFromList,
 				updateSubtaskList,
-				addSubtaskToTask
+				addSubtaskToTask,
+				deleteSubstaskFromTask
 			}}
 		>
 			{children}
