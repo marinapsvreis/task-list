@@ -7,7 +7,11 @@ export default async function handler(
 ) {
 	if(req.method !== "GET") return res.status(405).end();
 
-	const tasks = await prisma.task.findMany();
+	const tasks = await prisma.task.findMany({
+		include: {
+			subtasks: true
+		}
+	});
 
 	return res.status(200).json({ tasks });
 }
