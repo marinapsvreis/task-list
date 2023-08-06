@@ -12,6 +12,9 @@ export default async function handler(
 	const task = await prisma.task.findUnique({
 		where: {
 			id: Number(taskId)
+		},
+		include: {
+			subtasks: true
 		}
 	});
 

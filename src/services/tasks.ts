@@ -1,9 +1,11 @@
 import { api } from "@/lib/axios";
+import { Subtask } from "./subtasks";
 
 export interface Task {
 	id: number
 	name: string
 	checked: boolean
+	subtasks: Subtask[]
 	createdAt: Date
 }
 
@@ -33,6 +35,7 @@ export const updateTask = async (task: Task) => {
 	const { data } = await api.put(`/tasks/update/${task.id}`, {
 		name: task.name,
 		checked: !task.checked,
+		substasks: task.subtasks,
 		validateStatus: (s: number) => s === 201
 	}); 
 

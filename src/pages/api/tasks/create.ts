@@ -17,6 +17,9 @@ export default async function handler(
 		data: {
 			name: name,
 			checked: false,
+		},
+		include: {
+			subtasks: true
 		}
 	});
 

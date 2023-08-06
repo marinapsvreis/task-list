@@ -8,7 +8,7 @@ export default function Home() {
 		<TasksContextProvider>
 			<div className="w-full">
 				<Header />
-				<div className="flex flex-col w-4/5 m-auto gap-4">
+				<div className="flex flex-col w-4/5 gap-4 m-auto">
 					<TaskInput />
 					<TaskList />
 				</div>
