@@ -17,5 +17,5 @@ export default async function handler(
 
 	if(!subtask) return res.status(404).end();
 
-	return res.status(201).end();
+	return res.status(204).end();
 }

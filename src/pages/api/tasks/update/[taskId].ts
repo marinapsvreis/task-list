@@ -16,7 +16,7 @@ export default async function handler(
 
 	const taskId = String(req.query.taskId);
 
-	await prisma.task.update({
+	const task = await prisma.task.update({
 		where: {
 			id: Number(taskId)
 		},
@@ -26,5 +26,5 @@ export default async function handler(
 		}
 	});
 
-	return res.status(201).end();
+	return res.status(200).json({ task });
 }

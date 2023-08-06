@@ -9,5 +9,5 @@ export default async function handler(
 
 	const tasks = await prisma.task.findMany();
 
-	return res.json({ tasks });
+	return res.status(200).json({ tasks });
 }

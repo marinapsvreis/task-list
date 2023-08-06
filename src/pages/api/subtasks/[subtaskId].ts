@@ -17,5 +17,5 @@ export default async function handler(
 
 	if(!subtask) return res.status(404).end();
 
-	return res.json({ subtask });
+	return res.status(200).json({ subtask });
 }

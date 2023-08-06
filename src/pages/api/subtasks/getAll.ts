@@ -9,5 +9,5 @@ export default async function handler(
 
 	const subtasks = await prisma.subtask.findMany();
 
-	return res.json({ subtasks });
+	return res.status(200).json({ subtasks });
 }

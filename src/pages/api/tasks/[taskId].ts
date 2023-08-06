@@ -17,5 +17,5 @@ export default async function handler(
 
 	if(!task) return res.status(404).end();
 
-	return res.json({ task });
+	return res.status(200).json({ task });
 }

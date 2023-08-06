@@ -16,7 +16,7 @@ export default async function handler(
 
 	const subtaskId = String(req.query.subtaskId);
 
-	await prisma.subtask.update({
+	const subtask = await prisma.subtask.update({
 		where: {
 			id: Number(subtaskId)
 		},
@@ -26,5 +26,5 @@ export default async function handler(
 		}
 	});
 
-	return res.status(201).end();
+	return res.status(200).json({ subtask });
 }

@@ -15,5 +15,5 @@ export default async function handler(
 		}
 	});
 
-	return res.json({ subtasks });
+	return res.status(200).json({ subtasks });
 }
