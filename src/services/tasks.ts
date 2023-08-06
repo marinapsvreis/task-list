@@ -29,6 +29,14 @@ export const postTask = async (name: string) => {
 	return data;
 };
 
-export const deleteTask = async () => {};
+export const updateTask = async (task: Task) => {
+	const { data } = await api.put<Task>(`/tasks/update/${task.id}`, {
+		name: task.name,
+		checked: task.checked,
+		validateStatus: (s: number) => s === 201
+	}); 
 
-export const updateTask = async () => {};
+	return data;
+};
+
+export const deleteTask = async () => {};

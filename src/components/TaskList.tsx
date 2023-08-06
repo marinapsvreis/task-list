@@ -24,11 +24,11 @@ export default function TaskList() {
 	
 	return (
 		<div className="flex justify-center w-full rounded-lg shadow">
-			<div className="flex flex-col w-full gap-1 p-4 text-base text-black rounded-lg h-96 bg-slate-100">
+			<div className="flex flex-col w-full gap-1 p-4 text-base text-black rounded-lg min-h-96 bg-slate-100">
 				{
 					tasks.map((task) => {
 						return (
-							<TaskItem key={task.id} task={task} />
+							<TaskItem key={task.id} task={task} tasks={tasks} setTasksList={setTasks} />
 						);
 					})
 				}	
