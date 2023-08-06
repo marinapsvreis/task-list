@@ -57,25 +57,26 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 	};
 
 	const updateSubtaskList = async (subtask: Subtask) => {
-
 		const updatedSubtask = await updateSubtask(subtask);
-		const updatedSubtasksList = tasks.map((taskItem) => {
-			if(taskItem.id === subtask.taskId){
-				taskItem.subtasks.map((subtaskItem) => {
-					if(subtaskItem.id === subtask.id){
+	
+		const tasksUpdatedBySubtask = tasks.map((taskItem) => {
+			if (updatedSubtask.taskId === taskItem.id) {
+				const updatedSubtasks = taskItem.subtasks.map((subtaskItem) => {
+					if (subtaskItem.id === updatedSubtask.id) {
 						return updatedSubtask;
-					} else{
-						return subtask;
+					} else {
+						return subtaskItem;
 					}
 				});
+				return { ...taskItem, subtasks: updatedSubtasks };
 			} else {
 				return taskItem;
 			}
 		});
-
-		console.log(updatedSubtasksList);
 	
-		// setTasks(updatedSubtasksList);
+		if (tasksUpdatedBySubtask) {
+			setTasks(tasksUpdatedBySubtask);
+		}
 	};
 
 	const addSubtaskToTask = async (name: string, taskId: number) => {

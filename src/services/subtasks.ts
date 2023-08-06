@@ -23,7 +23,7 @@ export const postSubtask = async (name: string, taskId: number) => {
 };
 
 export const updateSubtask = async (subtask: Subtask) => {
-	const { data } = await api.put(`/subtask/update/${subtask.id}`, {
+	const { data } = await api.put(`/subtasks/update/${subtask.id}`, {
 		name: subtask.name,
 		checked: !subtask.checked,
 		validateStatus: (s: number) => s === 201

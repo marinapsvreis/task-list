@@ -9,7 +9,7 @@ export default async function handler(
 
 	const bodySchema = z.object({
 		name: z.string().max(450),
-		checked: z.boolean(),
+		checked: z.boolean()
 	});
 
 	const { name, checked } = bodySchema.parse(req.body);

@@ -7,7 +7,7 @@ export default async function handler(
 ) {
 	if(req.method !== "GET") return res.status(405).end();
 
-	const subtaskId = String(req.query.taskId);
+	const subtaskId = String(req.query.subtaskId);
 
 	const subtask = await prisma.subtask.findUnique({
 		where: {
