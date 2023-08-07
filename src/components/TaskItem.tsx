@@ -70,7 +70,7 @@ export default function TaskItem({ task }: TaskItemProps) {
 									);
 								}) : <p className="ml-6 italic">None subtasks to this task.</p>
 							}
-							<button onClick={handleOpenDialog} className="flex items-center justify-center gap-1 px-2 py-1 mt-2 ml-4 text-blue-600 transition rounded-lg hover:text-blue-700" title="Add new task">
+							<button disabled={task.checked} onClick={handleOpenDialog} className="flex items-center justify-center gap-1 px-2 py-1 mt-2 ml-4 text-blue-600 transition rounded-lg hover:text-blue-700 disabled:text-gray-200 disabled:cursor-not-allowed" title="Add new task">
 								<PlusCircle size={22} />New subtask
 							</button>
 						</AccordionBody>
