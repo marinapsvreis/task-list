@@ -1,3 +1,4 @@
+import SubtaskItem from "@/components/SubtaskItem";
 import { Subtask, deleteSubtask, postSubtask, updateSubtask } from "@/services/subtasks";
 import { Task, deleteTask, getAllTasks, postTask, updateTask } from "@/services/tasks";
 import { ReactNode, createContext, useEffect, useState } from "react";
@@ -42,6 +43,12 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 		const updatedTask = await updateTask(task);
 		const updatedTasksList = tasks.map((taskItem) => {
 			if(taskItem.id === task.id){
+				if(taskItem.subtasks.length > 0){
+					taskItem.subtasks.forEach(async (subtaskItem, i) => {
+						updatedTask.subtasks[i].checked = true;
+						await updateSubtask(subtaskItem);
+					});
+				}
 				return updatedTask;
 			} else {
 				return taskItem;
@@ -69,6 +76,17 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 						return subtaskItem;
 					}
 				});
+
+				if(updatedSubtasks.some((subtaskItem) => !subtaskItem.checked && taskItem.checked)){
+					taskItem.checked = false;
+					updateTask(taskItem);
+				}
+				
+				if(!updatedSubtasks.some((subtaskItem) => !subtaskItem.checked && !taskItem.checked)){
+					taskItem.checked = true;
+					updateTask(taskItem);
+				}
+
 				return { ...taskItem, subtasks: updatedSubtasks };
 			} else {
 				return taskItem;
@@ -113,7 +131,7 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 
 	useEffect(() => {
 		getTasksList();
-	}, [tasks]);
+	}, []);
 
 	return (
 		<TasksContext.Provider
