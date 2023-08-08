@@ -40,6 +40,15 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 
 	const updateTaskList = async (task: Task) => {
 		const updatedTask = await updateTask(task);
+
+		if(!updatedTask.checked){
+			updatedTask.subtasks.forEach(async (subtask: Subtask) => {
+				await updateSubtaskList(subtask);
+			});
+		}
+
+		const updatedTaskWithSubtasksReseted = await getTaskById(task.id);
+
 		const updatedTasksList = tasks.map((taskItem) => {
 			if(taskItem.id === task.id){
 				if(taskItem.subtasks.length > 0){
@@ -48,7 +57,7 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 						await updateSubtask(subtaskItem);
 					});
 				}
-				return updatedTask;
+				return updatedTaskWithSubtasksReseted;
 			} else {
 				return taskItem;
 			}
