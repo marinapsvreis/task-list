@@ -65,7 +65,13 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 
 	const updateSubtaskList = async (subtask: Subtask) => {
 		await updateSubtask(subtask);
-		const taskUpdatedBySubtask = await getTaskById(subtask.taskId);
+		let taskUpdatedBySubtask = await getTaskById(subtask.taskId);
+		
+		if(!taskUpdatedBySubtask.checked && !taskUpdatedBySubtask.subtasks.some((subtaskItem: Subtask) => !subtaskItem.checked)){
+			taskUpdatedBySubtask = await updateTask(taskUpdatedBySubtask);
+		} else if(taskUpdatedBySubtask.checked && taskUpdatedBySubtask.subtasks.some((subtaskItem: Subtask) => !subtaskItem.checked)){
+			taskUpdatedBySubtask = await updateTask(taskUpdatedBySubtask);
+		}
 
 		const tasksListUpdated = tasks.map((task) => {
 			if(task.id === subtask.taskId){
