@@ -112,6 +112,8 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 				});
 			});
 		}
+
+		getTasksList();
 	};
 
 	const deleteSubstaskFromTask = async (subtask: Subtask) => {
@@ -126,6 +128,7 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 		});
 
 		setTasks(tasksListWithoutSubtask);
+		getTasksList();
 	};
 
 	useEffect(() => {
