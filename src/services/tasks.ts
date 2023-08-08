@@ -20,7 +20,13 @@ export const getAllTasks = async () => {
 	return data;
 };
 
-export const getTaskById = async () => {};
+export const getTaskById = async (id: number) => {
+	const { data } = await api.get(`/tasks/${id}`, {
+		validateStatus: (s: number) => s === 200
+	}); 
+
+	return data.task;
+};
 
 export const postTask = async (name: string) => {
 	const { data } = await api.post("/tasks/create", {

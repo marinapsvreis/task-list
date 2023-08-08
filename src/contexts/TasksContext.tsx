@@ -1,5 +1,5 @@
 import { Subtask, deleteSubtask, postSubtask, updateSubtask } from "@/services/subtasks";
-import { Task, deleteTask, getAllTasks, postTask, updateTask } from "@/services/tasks";
+import { Task, deleteTask, getAllTasks, getTaskById, postTask, updateTask } from "@/services/tasks";
 import { ReactNode, createContext, useEffect, useState } from "react";
 
 interface TaskContextType {
@@ -64,37 +64,18 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 	};
 
 	const updateSubtaskList = async (subtask: Subtask) => {
-		const updatedSubtask = await updateSubtask(subtask);
-	
-		const tasksUpdatedBySubtask = await Promise.all(tasks.map(async (taskItem) => {
-			if (updatedSubtask.taskId === taskItem.id) {
-				const updatedSubtasks = taskItem.subtasks.map((subtaskItem) => {
-					if (subtaskItem.id === updatedSubtask.id) {
-						return updatedSubtask;
-					} else {
-						return subtaskItem;
-					}
-				});
+		await updateSubtask(subtask);
+		const taskUpdatedBySubtask = await getTaskById(subtask.taskId);
 
-				if(updatedSubtasks.some((subtaskItem) => !subtaskItem.checked && taskItem.checked)){
-					taskItem.checked = false;
-					await updateTask(taskItem);
-				}
-				
-				if(!updatedSubtasks.some((subtaskItem) => !subtaskItem.checked && !taskItem.checked)){
-					taskItem.checked = true;
-					await updateTask(taskItem);
-				}
-
-				return { ...taskItem, subtasks: updatedSubtasks };
+		const tasksListUpdated = tasks.map((task) => {
+			if(task.id === subtask.taskId){
+				return taskUpdatedBySubtask;
 			} else {
-				return taskItem;
+				return task;
 			}
-		}));
-	
-		if (tasksUpdatedBySubtask) {
-			setTasks(tasksUpdatedBySubtask);
-		}
+		});
+
+		setTasks(tasksListUpdated);
 	};
 
 	const addSubtaskToTask = async (name: string, taskId: number) => {
