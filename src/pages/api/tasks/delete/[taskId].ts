@@ -5,17 +5,32 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse,
 ) {
-	if(req.method !== "DELETE") return res.status(405).end();
-
-	const taskId = String(req.query.taskId);
-
-	const task = await prisma.task.delete({
-		where: {
-			id: Number(taskId)
+	try {
+		if (req.method !== "DELETE") {
+			return res.status(405).json({ error: "Method not allowed" });
 		}
-	});
 
-	if(!task) return res.status(404).end();
+		const taskId = String(req.query.taskId);
 
-	return res.status(204).end();
+		const existingTask = await prisma.task.findUnique({
+			where: {
+				id: Number(taskId)
+			}
+		});
+
+		if (!existingTask) {
+			return res.status(404).json({ error: "Task not found" });
+		}
+
+		await prisma.task.delete({
+			where: {
+				id: Number(taskId)
+			}
+		});
+
+		return res.status(204).end();
+	} catch (error) {
+		console.error("Error deleting task:", error);
+		return res.status(500).json({ error: "Internal server error" });
+	}
 }
