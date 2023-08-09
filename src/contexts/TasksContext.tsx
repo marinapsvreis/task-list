@@ -36,25 +36,26 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 		if(task){
 			setTasks([task, ...tasks]);
 		}
+		getTasksList();
 	};
 
 	const updateTaskList = async (task: Task) => {
 		const updatedTask = await updateTask(task);
 
-		if(!updatedTask.checked){
-			updatedTask.subtasks.forEach(async (subtask: Subtask) => {
+		if (!updatedTask.checked) {
+			for (const subtask of updatedTask.subtasks) {
 				await updateSubtaskList(subtask);
-			});
+			}
 		}
 
 		const updatedTaskWithSubtasksReseted = await getTaskById(task.id);
 
 		const updatedTasksList = tasks.map((taskItem) => {
-			if(taskItem.id === task.id){
-				if(taskItem.subtasks.length > 0){
-					taskItem.subtasks.forEach(async (subtaskItem, i) => {
+			if (taskItem.id === task.id) {
+				if (taskItem.subtasks.length > 0) {
+					taskItem.subtasks.forEach((subtaskItem, i) => {
 						updatedTask.subtasks[i].checked = true;
-						await updateSubtask(subtaskItem);
+						updateSubtask(subtaskItem);
 					});
 				}
 				return updatedTaskWithSubtasksReseted;
@@ -62,14 +63,16 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 				return taskItem;
 			}
 		});
-	
+
 		setTasks(updatedTasksList);
+		await getTasksList();
 	};
 
 	const deleteTaskFromList = (id: number) => {
 		deleteTask(id);
 		const tasksListWithoutTask = tasks.filter((taskItem) => taskItem.id !== id);
 		setTasks(tasksListWithoutTask);
+		getTasksList();
 	};
 
 	const updateSubtaskList = async (subtask: Subtask) => {
@@ -91,6 +94,7 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 		});
 
 		setTasks(tasksListUpdated);
+		getTasksList();
 	};
 
 	const addSubtaskToTask = async (name: string, taskId: number) => {
@@ -108,23 +112,22 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 				});
 			});
 		}
-
 		getTasksList();
 	};
 
 	const deleteSubstaskFromTask = async (subtask: Subtask) => {
-		deleteSubtask(subtask.id);
-		const tasksListWithoutSubtask = tasks.map((taskItem) => {
-			if(taskItem.id === subtask.taskId){
-				const updatedSubtasks = taskItem.subtasks.filter((subtaskItem) => subtask.id === subtaskItem.id);
+		await deleteSubtask(subtask.id);
+		const updatedTasksList = tasks.map((taskItem) => {
+			if (taskItem.id === subtask.taskId) {
+				const updatedSubtasks = taskItem.subtasks.filter((subtaskItem) => subtask.id !== subtaskItem.id);
 				return { ...taskItem, subtasks: updatedSubtasks };
 			} else {
 				return taskItem;
 			}
 		});
 
-		setTasks(tasksListWithoutSubtask);
-		getTasksList();
+		setTasks(updatedTasksList);
+		await getTasksList();
 	};
 
 	useEffect(() => {
