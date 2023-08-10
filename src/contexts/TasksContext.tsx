@@ -58,11 +58,11 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 		await getTasksList();
 	};
 
-	const deleteTaskFromList = (id: number) => {
+	const deleteTaskFromList = async (id: number) => {
 		deleteTask(id);
 		const tasksListWithoutTask = tasks.filter((taskItem) => taskItem.id !== id);
 		setTasks(tasksListWithoutTask);
-		getTasksList();
+		await getTasksList();
 	};
 
 	const updateSubtaskList = async (subtask: Subtask) => {
