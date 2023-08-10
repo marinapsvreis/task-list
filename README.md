@@ -14,6 +14,14 @@ You need a .env file to config these too environment variables:
 - DATABASE_URL="[ConnectionStringToYourDataBase]"
 - DIRECT_URL="[ConnectionStringToYourDataBase]"
 
+## Techs
+
+- React
+- Next
+- Typescript
+- Tailwind CSS
+- Zod
+
 ## Features
 
 - Adding tasks
