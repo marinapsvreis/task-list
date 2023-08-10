@@ -42,7 +42,7 @@ export default function TaskItem({ task }: TaskItemProps) {
 							<CaretRight size={20} weight="fill" />
 						}
 					</button>
-					<div className="flex flex-col justify-between w-full gap-2 px-4 py-2">
+					<div className="flex flex-col justify-between w-full gap-2 px-4 pt-4 pb-2">
 						<div className="flex justify-between w-full">
 							<div className="flex gap-2">
 								<div>

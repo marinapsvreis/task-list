@@ -12,7 +12,7 @@ export default async function handler(
 		}
 
 		const bodySchema = z.object({
-			name: z.string().max(450)
+			name: z.string().min(1).max(450)
 		});
 
 		const validationResult = bodySchema.safeParse(req.body);
