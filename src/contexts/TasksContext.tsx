@@ -55,7 +55,7 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 			});
 		}
 
-		getTasksList();
+		await getTasksList();
 	};
 
 	const deleteTaskFromList = (id: number) => {
