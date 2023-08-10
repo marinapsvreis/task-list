@@ -42,30 +42,20 @@ export function TasksContextProvider({ children }: TasksContextProviderProps) {
 	const updateTaskList = async (task: Task) => {
 		const updatedTask = await updateTask(task);
 
-		if (!updatedTask.checked) {
-			for (const subtask of updatedTask.subtasks) {
-				await updateSubtaskList(subtask);
-			}
+		
+		const updatedSubtasks = updatedTask.subtasks.map((subtask: Subtask) => ({
+			...subtask,
+			checked: updatedTask.checked
+		}));
+		
+		for (const subtask of updatedSubtasks) {
+			await updateSubtask({
+				...subtask,
+				checked: !updatedTask.checked
+			});
 		}
 
-		const updatedTaskWithSubtasksReseted = await getTaskById(task.id);
-
-		const updatedTasksList = tasks.map((taskItem) => {
-			if (taskItem.id === task.id) {
-				if (taskItem.subtasks.length > 0) {
-					taskItem.subtasks.forEach((subtaskItem, i) => {
-						updatedTask.subtasks[i].checked = true;
-						updateSubtask(subtaskItem);
-					});
-				}
-				return updatedTaskWithSubtasksReseted;
-			} else {
-				return taskItem;
-			}
-		});
-
-		setTasks(updatedTasksList);
-		await getTasksList();
+		getTasksList();
 	};
 
 	const deleteTaskFromList = (id: number) => {
