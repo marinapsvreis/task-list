@@ -19,6 +19,7 @@ You need a .env file to config these too environment variables:
 - React
 - Next
 - Typescript
+- Prisma
 - Tailwind CSS
 - Zod
 
