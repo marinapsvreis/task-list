@@ -7,6 +7,9 @@
 First, install packages:
 ```npm i```
 
+You need to run to generate database:
+```npx prisma generate```
+
 Command for run the project:
 ```npm run dev```
 
